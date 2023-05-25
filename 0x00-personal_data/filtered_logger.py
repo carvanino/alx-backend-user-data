@@ -80,3 +80,29 @@ def get_db() -> connection.MySQLConnection:
     cnx = connection.MySQLConnection(user=USER, password=PASSWORD,
                                      host=HOST, database=db)
     return cnx
+
+
+def main():
+    """
+    Retrieves all rows from the users table and formats the PII
+    """
+    db = get_db()
+    cursor = db.cursor()
+    query = ('SELECT * FROM users')
+    formatter = RedactingFormatter(list(PII_FIELDS))
+    cursor.execute(query)
+    columns = [column[0] for column in cursor.description]
+    for row in cursor:
+        rec = dict(zip(columns, row))
+        rec_msg = "; ".join("{}={}".format(key, repr(value))
+                           for key, value in rec.items())
+        record = logging.LogRecord(
+            "user_data", logging.INFO, None, None, rec_msg, None, None
+        )
+        print(formatter.format(record))
+    cursor.close()
+    db.close()
+
+
+if __name__ == '__main__':
+    main()
