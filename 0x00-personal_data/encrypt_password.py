@@ -21,6 +21,13 @@ def hash_password(password: str) -> bytes:
 
 def is_valid(hashed_password: bytes, password: str) -> bool:
     """
+    Uses bycrpt to validate that the provided password matches the hatched
+    password
+    Args:
+        password (str): The password
+        hashed_password (bytes): A hashed password
+    Returns:
+        bool: True or False
     """
     if bcrypt.checkpw(password.encode('utf-8'), hashed_password):
         return True
