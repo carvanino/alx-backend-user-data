@@ -1,0 +1,30 @@
+#!/usr/bin/env python3
+"""
+Hold the function filter_datum which returns an obfuscated log message
+"""
+
+
+import re
+import logging
+
+
+def filter_datum(fields, redaction, message, separator):
+    """
+    Returns an obfuscated log message
+    Args:
+        fields: List - A list of strings representing the fields to obfuscate
+        redaction: str - Representing what the field will be obfuscated by
+        message: str - Representing the log line
+        separator: str - Represent the character that separates all fields
+                        in the log line
+    """
+    for field in fields:
+        pattern = r'({}=)([^{}]+)'.format(field, separator)
+        # pattern = r'({}=)([^;]+|\w+)'.format(field)
+        # pattern = r'({}=)(\d+.\d+.\d+|\w+)'.format(field)
+        message = re.sub(pattern, r'\1{}'.format(redaction), message)
+        """
+        message = re.sub(f'{field}=.*?{separator}',
+                         f'{field}={redaction}{separator}', message)
+        """
+    return message
