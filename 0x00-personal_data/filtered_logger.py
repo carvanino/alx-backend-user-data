@@ -5,10 +5,10 @@ Hold the function filter_datum which returns an obfuscated log message
 
 
 import re
-import logging
+from typing import List
 
 
-def filter_datum(fields, redaction, message, separator):
+def filter_datum(fields: List, redaction: str, message: str, separator: str) -> str:
     """
     Returns an obfuscated log message
     Args:
