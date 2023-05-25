@@ -7,6 +7,8 @@ Hold the function filter_datum which returns an obfuscated log message
 import re
 from typing import List
 import logging
+import os
+from mysql.connector import connection
 
 
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
@@ -47,8 +49,8 @@ class RedactingFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord) -> str:
         """ Filters values in Incoming log records using filter_datum """
         record.msg = filter_datum(
-                self.fields, self.REDACTION,
-                record.getMessage(), self.SEPARATOR)
+            self.fields, self.REDACTION,
+            record.getMessage(), self.SEPARATOR)
         return super().format(record)
 
 
@@ -58,9 +60,23 @@ def get_logger() -> logging.Logger:
     """
     user_data = logging.getLogger(__name__)
     user_data.setLevel(logging.INFO)
+    # propagate determines if handlers of higher severity are ignored or not
     user_data.propagate = False
     formatter = RedactingFormatter(list(PII_FIELDS))
     stream_handler = logging.StreamHandler()
     stream_handler.setFormatter(formatter)
     user_data.addHandler(stream_handler)
     return user_data
+
+
+def get_db() -> connection.MySQLConnection:
+    """
+    Returns a connector to a database
+    """
+    USER = os.getenv('PERSONAL_DATA_DB_USERNAME') or 'root'
+    PASSWORD = os.getenv('PERSONAL_DATA_DB_PASSWORD') or ''
+    HOST = os.getenv('PERSONAL_DATA_DB_HOST') or 'localhost'
+    db = os.getenv('PERSONAL_DATA_DB_NAME')
+    cnx = connection.MySQLConnection(user=USER, password=PASSWORD,
+                                     host=HOST, database=db)
+    return cnx
