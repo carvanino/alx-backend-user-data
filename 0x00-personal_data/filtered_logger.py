@@ -95,7 +95,7 @@ def main():
     for row in cursor:
         rec = dict(zip(columns, row))
         rec_msg = "; ".join("{}={}".format(key, repr(value))
-                           for key, value in rec.items())
+                            for key, value in rec.items())
         record = logging.LogRecord(
             "user_data", logging.INFO, None, None, rec_msg, None, None
         )
