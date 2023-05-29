@@ -35,5 +35,5 @@ def unauthorized() -> str:
 
 @app_views.route('/forbidden', methods=['GET'], strict_slashes=False)
 def no_access_resources() -> str:
-    """ Raises a 403 using abort which calls the error handler for 403"""
+    """ Raises a 403 using abort which calls the error handler for 403 """
     abort(403)
