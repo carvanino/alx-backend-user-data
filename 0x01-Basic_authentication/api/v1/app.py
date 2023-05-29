@@ -40,7 +40,7 @@ def unauthorized(error) -> str:
 
 
 @app.errorhandler(403)
-def no_access_resources(error):
+def no_access_resources(error) -> str:
     """
     Authorized user has no access to resources
     Forbidden error: 403

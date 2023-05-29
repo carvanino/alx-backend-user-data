@@ -27,13 +27,13 @@ def stats() -> str:
 
 
 @app_views.route('/unauthorized', strict_slashes=False)
-def unauthorized():
+def unauthorized() -> str:
     """ Raises a 401 error by using abort
     """
     abort(401)
 
 
 @app_views.route('forbidden', strict_slashes=False)
-def no_access_resources():
+def no_access_resources() -> str:
     """ Raises a 403 using abort which calls the error handler for 403"""
     abort(403)
