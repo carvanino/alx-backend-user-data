@@ -6,6 +6,8 @@ Contains the sub class BasicAuth, inherited from Auth
 
 from api.v1.auth.auth import Auth
 import base64
+from typing import Tuple, TypeVar
+from models.user import User
 
 
 class BasicAuth(Auth):
@@ -47,7 +49,7 @@ class BasicAuth(Auth):
         return None
 
     def extract_user_credentials(
-            self, decoded_base64_authorization_header: str) -> (str, str):
+            self, decoded_base64_authorization_header: str) -> Tuple[str, str]:
         """
         Get the users email and password from a decoded string
         """
@@ -60,3 +62,23 @@ class BasicAuth(Auth):
             password = user_credential[1]
             return (email, password)
         return (email, password)
+
+    def user_object_from_credentials(
+            self,
+            user_email: str,
+            user_pwd: str) -> TypeVar('User'):
+        """
+        Returns an instance of User based on the email and password provided
+        """
+        if not user_email or not isinstance(user_email, str):
+            return None
+        if not user_pwd or not isinstance(user_pwd, str):
+            return None
+        user = User.search({"email": user_email})
+        # print(user)
+        if not user:
+            return None
+        else:
+            if user[0].is_valid_password(user_pwd):
+                return user[0]
+            return None
