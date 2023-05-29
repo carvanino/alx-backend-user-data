@@ -74,7 +74,10 @@ class BasicAuth(Auth):
             return None
         if not user_pwd or not isinstance(user_pwd, str):
             return None
-        user = User.search({"email": user_email})
+        try:
+            user = User.search({"email": user_email})
+        except Exception:
+            return None
         # print(user)
         if not user:
             return None
