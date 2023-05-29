@@ -76,7 +76,7 @@ class BasicAuth(Auth):
             return None
         try:
             user = User.search({"email": user_email})
-        except Exception:
+        except KeyError:
             return None
         # print(user)
         if not user:
