@@ -12,6 +12,7 @@ import os
 app = Flask(__name__)
 app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
+
 auth = None
 auth_type = getenv('AUTH_TYPE')
 if auth_type == 'basic_auth':
@@ -42,7 +43,7 @@ def no_access_resources(error) -> str:
     Authorized user has no access to resources
     Forbidden error: 403
     """
-    return jsonify({"error": "Forbidden"})
+    return jsonify({"error": "Forbidden"}), 403
 
 
 @app.before_request
