@@ -48,6 +48,9 @@ def no_access_resources(error) -> str:
 
 @app.before_request
 def before_request():
+    """
+    Authenticates before any request is sent
+    """
     excluded_paths = [
         '/api/v1/status/',
         '/api/v1/unauthorized/',
