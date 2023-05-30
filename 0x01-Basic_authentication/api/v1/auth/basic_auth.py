@@ -58,7 +58,8 @@ class BasicAuth(Auth):
         if decoded_base64_authorization_header and isinstance(
                 decoded_base64_authorization_header,
                 str) and ':' in decoded_base64_authorization_header:
-            user_credential = decoded_base64_authorization_header.split(':')
+            user_credential = decoded_base64_authorization_header.split(':', 1)
+            # print(user_credential)
             email = user_credential[0]
             password = user_credential[1]
             return (email, password)
@@ -93,11 +94,11 @@ class BasicAuth(Auth):
         Overloads Auth and retrieves the User instance for a request
         """
         authorization_header = self.authorization_header(request)
-        # print(authorization_header)
         encoded_str = self.extract_base64_authorization_header(
             authorization_header)
         decoded_str = self.decode_base64_authorization_header(encoded_str)
         user_credentials = self.extract_user_credentials(decoded_str)
+        # print("User =", user_credentials)
         user_email = user_credentials[0]
         user_pwd = user_credentials[1]
         return self.user_object_from_credentials(user_email, user_pwd)

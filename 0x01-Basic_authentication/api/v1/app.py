@@ -55,7 +55,6 @@ def before_request():
         '/api/v1/status/',
         '/api/v1/unauthorized/',
         '/api/v1/forbidden/']
-    # print(auth.require_auth(request.path, excluded_paths))
     if auth is not None and auth.require_auth(
             request.path, excluded_paths) is False:
         return
