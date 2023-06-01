@@ -41,16 +41,16 @@ class SessionExpAuth(SessionAuth):
         """
         Returns a user_id so long the session is not expired
         """
-        if session_id is None or session_id not in self.user_id_by_session_id:
+        if session_id is None:
             return None
-        session_dictionary = self.user_id_by_session_id[session_id]
+        session_dictionary = self.user_id_by_session_id.get('session_id')
         if session_dictionary is None:
             return None
         if self.session_duration <= 0:
             return session_dictionary.get('user_id')
-        if 'created_at' not in session_dictionary:
+        created_at = session_dictionary.get('created_at')
+        if created_at is None:
             return None
-        created_at = session_dictionary['created_at']
         duration_sec = timedelta(seconds=self.session_duration)
         if created_at + duration_sec < datetime.now():
             return None
