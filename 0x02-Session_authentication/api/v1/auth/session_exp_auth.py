@@ -16,7 +16,10 @@ class SessionExpAuth(SessionAuth):
     def __init__(self) -> None:
         """ Initializes the class """
         super().__init__()
-        self.session_duration = int(os.getenv('SESSION_DURATION')) or 0
+        try:
+            self.session_duration = int(os.getenv('SESSION_DURATION'))
+        except TypeError:
+            self.ssssion_duration = 0
 
     def create_session(self, user_id: str = None) -> str:
         """
