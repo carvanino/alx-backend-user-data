@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+Hold a sub class SessionExpAuth from SessionAuth
 """
 
 from api.v1.auth.session_auth import SessionAuth
