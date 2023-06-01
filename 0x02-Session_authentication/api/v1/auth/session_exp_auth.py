@@ -19,7 +19,7 @@ class SessionExpAuth(SessionAuth):
         session_duration = os.getenv('SESSION_DURATION')
         try:
             self.session_duration = int(session_duration)
-        except (TypeError, ValueError):
+        except (ValueError, TypeError):
             self.ssssion_duration = 0
 
     def create_session(self, user_id: str = None) -> str:
@@ -41,16 +41,16 @@ class SessionExpAuth(SessionAuth):
         """
         Returns a user_id so long the session is not expired
         """
-        if session_id is None:
+        if session_id is None or session_id not in self.user_id_by_session_id:
             return None
-        session_dictionary = self.user_id_by_session_id.get('session_id')
+        session_dictionary = self.user_id_by_session_id[session_id]
         if session_dictionary is None:
             return None
         if self.session_duration <= 0:
             return session_dictionary.get('user_id')
-        created_at = session_dictionary.get('created_at')
-        if created_at is None:
+        if 'created_at' not in session_dictionary:
             return None
+        created_at = session_dictionary['created_at']
         duration_sec = timedelta(seconds=self.session_duration)
         if created_at + duration_sec < datetime.now():
             return None
