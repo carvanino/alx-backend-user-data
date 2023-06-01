@@ -45,6 +45,6 @@ def logout():
     """
     from api.v1.app import auth
     is_alive = auth.destroy_session(request)
-    if is_alive is False:
+    if not is_alive:
         abort(404)
     return jsonify({}), 200
