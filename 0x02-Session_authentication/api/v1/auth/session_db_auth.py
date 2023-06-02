@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-
+Holds the sub class SessionDBAuth from SessionExpAuth
 """
 
 from flask import request
