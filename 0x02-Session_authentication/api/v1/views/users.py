@@ -36,13 +36,15 @@ def view_one_user(user_id: str = None) -> str:
     return jsonify(user.to_json())
 
 
-@app_views.route('/users/me', strict_slashes=False)
-def get_authUser():
-    """
-    Retreive the authenticated user
-    """
-    user = request.current_user
-    return jsonify(user.to_json())
+# @app_views.route('/users/me', strict_slashes=False)
+# def get_authUser():
+#     """
+#     Retreive the authenticated user
+#     """
+#     user = request.current_user
+#     if user is None:
+#         abort(404)
+#     return jsonify(user.to_json())
 
 
 @app_views.route('/users/<user_id>', methods=['DELETE'], strict_slashes=False)

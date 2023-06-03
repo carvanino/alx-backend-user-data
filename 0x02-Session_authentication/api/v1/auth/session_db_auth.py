@@ -42,7 +42,7 @@ class SessionDBAuth(SessionExpAuth):
         if session_id is None:
             return None
         # This will instantiate the class with all objects in the file
-        UserSession.load_from_file
+        UserSession.load_from_file()
         user_session_id = UserSession.search({'session_id': session_id})
         if not user_session_id:
             return None
