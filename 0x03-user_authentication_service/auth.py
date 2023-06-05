@@ -7,6 +7,7 @@ from db import DB
 from sqlalchemy.exc import NoResultFound
 from user import User
 from bcrypt import hashpw, gensalt, checkpw
+from uuid import uuid4
 
 
 def _hash_password(password: str) -> bytes:
@@ -19,6 +20,13 @@ def _hash_password(password: str) -> bytes:
     """
     hashed_password = hashpw(password.encode('utf-8'), gensalt())
     return hashed_password
+
+
+def _generate_uuid() -> str:
+    """
+    Returns a string representation of a new UUID
+    """
+    return str(uuid4)
 
 
 class Auth:
@@ -43,7 +51,7 @@ class Auth:
 
     def valid_login(self, email: str, password: str) -> bool:
         """
-
+        Validates and Authenticates a user during login
         """
         try:
             user = self._db.find_user_by(email=email)
