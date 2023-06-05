@@ -62,10 +62,8 @@ class DB:
         user = self.find_user_by(id=user_id)
         # print(user.__dict__)
         for k, v in kwargs.items():
-            if k in user.__dict__:
-                user.k = v
+            if hasattr(user, k):
+                setattr(user, k, v)
             else:
                 raise ValueError
         self._session.commit()
-        self._session.close
-        return None

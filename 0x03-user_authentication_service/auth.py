@@ -73,7 +73,6 @@ class Auth:
             session_id = _generate_uuid()
             # user.session_id = session_id
             self._db.update_user(user.id, session_id=session_id)
-            # print(user.session_id)
             return session_id
 
     def get_user_from_session_id(self, session_id: str) -> User:
@@ -94,9 +93,10 @@ class Auth:
     
     def destroy_session(self, user_id: int) -> None:
         """
+        Implements a Logout feature, by deleting users session
         """
         try:
-            user = self._db.find_user_by(id=user_id)
+            self._db.find_user_by(id=user_id)
         except Exception:
             return None
         self._db.update_user(user_id, session_id=None)
