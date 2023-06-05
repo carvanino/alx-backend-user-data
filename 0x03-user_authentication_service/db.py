@@ -8,8 +8,9 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.exc import NoResultFound
+
 from user import Base, User
-from typing import Optional
+# from typing import Optional
 
 
 class DB:
