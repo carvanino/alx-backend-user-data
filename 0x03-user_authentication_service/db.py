@@ -9,7 +9,7 @@ from sqlalchemy.orm.session import Session
 from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.exc import NoResultFound
 from user import Base, User
-from typing import TypeVar
+from typing import Optional
 
 
 class DB:
@@ -42,14 +42,29 @@ class DB:
         self._session.commit()
         return user
 
-    def find_user_by(self, **kwarg) -> User:
+    def find_user_by(self, **kwargs) -> User:
         """
         Returns the first row found in the users table from
         a key word argument
         """
-        if not kwarg:
+        if not kwargs:
             raise InvalidRequestError
-        user = self._session.query(User).filter_by(**kwarg).first()
+        user = self._session.query(User).filter_by(**kwargs).first()
         if user is None:
             raise NoResultFound
         return user
+
+    def update_user(self, user_id: int, **kwargs) -> None:
+        """
+        Updates a user attribute in the Database with the kwargs passed
+        """
+        user = self.find_user_by(id=user_id)
+        # print(user.__dict__)
+        for k, v in kwargs.items():
+            if k in user.__dict__:
+                user.k = v
+            else:
+                raise ValueError
+        self._session.commit()
+        self._session.close
+        return None
