@@ -63,6 +63,19 @@ def login():
     abort(401)
 
 
+@app.route('/reset_password', methods=['POST'])
+def get_reset_password_token():
+    """
+    Reset a password with a reset token
+    """
+    try:
+        email = request.form.get('email')
+    except KeyError:
+        abort(403)
+    reset_token = AUTH.get_reset_password_token(email)
+    return jsonify({"email": email, "reset_token": reset_token})
+
+
 @app.route('/sessions', methods=['DELETE'])
 def logout():
     """
