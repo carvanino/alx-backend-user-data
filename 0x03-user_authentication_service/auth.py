@@ -6,7 +6,7 @@ Defines a function that hashes a password
 from db import DB
 from sqlalchemy.exc import NoResultFound
 from user import User
-from bcrypt import hashpw, gensalt
+from bcrypt import hashpw, gensalt, checkpw
 
 
 def _hash_password(password: str) -> bytes:
@@ -40,3 +40,15 @@ class Auth:
         else:
             raise ValueError("User {} already exists".format(email))
         return new_user
+
+    def valid_login(self, email: str, password: str) -> bool:
+        """
+
+        """
+        try:
+            user = self._db.find_user_by(email=email)
+        except Exception:
+            return False
+        if checkpw(password.encode('utf-8'), user.hashed_password):
+            return True
+        return False
