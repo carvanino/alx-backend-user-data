@@ -95,7 +95,7 @@ def update_password():
     except ValueError:
         abort(403)
     else:
-        return jsonify({"email": email, "message": "password updated"}), 200
+        return jsonify({"email": email, "message": "Password updated"}), 200
 
 
 @app.route('/sessions', methods=['DELETE'])
