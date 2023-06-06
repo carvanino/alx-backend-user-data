@@ -4,10 +4,9 @@ Defines a function that hashes a password
 """
 
 from db import DB
-from sqlalchemy.exc import NoResultFound
+from sqlalchemy.orm.exc import NoResultFound
 from user import User
-# from bcrypt import hashpw, gensalt, checkpw
-import bcrypt
+from bcrypt import hashpw, gensalt, checkpw
 from uuid import uuid4
 
 
@@ -19,8 +18,8 @@ def _hash_password(password: str) -> bytes:
     Return:
         (bytes): The hashed string
     """
-    # hashed_password = 
-    return bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+    hashed_password = hashpw(password.encode(), gensalt())
+    return hashed_password
 
 
 def _generate_uuid() -> str:
