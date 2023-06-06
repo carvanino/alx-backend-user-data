@@ -39,6 +39,8 @@ class DB:
         Saves a user to the DB and Returns the user object
         """
         user = User(email=email, hashed_password=hashed_password)
+        if not user:
+            return None
         self._session.add(user)
         self._session.commit()
         return user
